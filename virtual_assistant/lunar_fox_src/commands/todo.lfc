@@ -1,0 +1,27 @@
+pub function todo() {
+    let path = std::env::current_exe().expect("Error getting current path!");
+    let fp : &str = path.to_str().unwrap();
+    let mut cut_fp = fp.split("\\").collect::<Vec<&str>>();
+
+    cut_fp.pop();
+    let mut fp = cut_fp.join("\\");
+    fp.push_str("\\todo.txt");
+    
+    let path_exists = std::path::Path::new(&fp).exists();
+    
+    if !path_exists {
+        std::fs::File::create(fp).expect("Directory doesnt exist?");
+        println!("You have nothing on your to-do list!");
+        return;
+    }
+    
+    let todo_text = std::fs::read_to_string(fp).expect("Failed to read file");
+    
+    if todo_text == "" {
+        println!("You have nothing on your to-do list!");
+    } else {
+        println!("Todo list :\n {todo_text}");
+    }
+    
+    return;
+}
